@@ -66,12 +66,22 @@ public class InputText extends JFrame {
     private final JCheckBox isPrintInfo                 = new JCheckBox("Печатать сообщение о применение алгоритмов.");
     private final JCheckBox isPrintProgrammEstimates    = new JCheckBox("Печатать информацию о работе инструмента.     ");
 
-    public InputText() {
-        initialization();
+    public InputText(String[] args) {
+        if(args.length != 0) {
+            if(args[0].equals("-g")) {
+                initialization();
+            } else {
+                if(args[0].equals("-f")) {
+                    String straText = inputeFile(args[1]);
+                    setNameFile(args[1]);
+                    initializationGraf(straText);
+                }
+            }
+    }
     }
 
     public static void main(String[] args) throws IOException {
-        InputText gUISentence = new InputText();
+        InputText gUISentence = new InputText(args);
     }
 
     //инициализация графа
@@ -165,7 +175,7 @@ public class InputText extends JFrame {
     public static String inputeFile(String path) {
         StringBuilder sb = new StringBuilder();
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(path));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(path), "UTF-8"));
             String buffer;
             while ((buffer = reader.readLine()) != null) {
                 sb.append(buffer);
@@ -173,8 +183,10 @@ public class InputText extends JFrame {
             try {
                 reader.close();
             } catch (IOException ex) {
+                System.err.println(ex);
             }
         } catch (IOException e) {
+                System.err.println(e);
         }
 
         return sb.substring(0);
@@ -196,10 +208,7 @@ public class InputText extends JFrame {
             SystemInOut.setIsPrintInfo(isPrintInfo.isSelected());
             SystemInOut.setIsPrintProgrammEstimates(isPrintProgrammEstimates.isSelected());
 
-            if(inputPathOrText.getText().contains(".txt")){
-                SystemInOut.setFolderPath(inputPathOrText.getText().replace(".txt", ""));
-                ProgramAnalysis.setNameIputeFile(inputPathOrText.getText());
-            }
+            setNameFile(inputPathOrText.getText());
 
             remove(panelInput);
 
@@ -220,6 +229,13 @@ public class InputText extends JFrame {
         }
     }
 
+    private void setNameFile(String nameFile) {
+        if(nameFile.contains(".txt")){
+            SystemInOut.setFolderPath(nameFile.replace(".txt", ""));
+            ProgramAnalysis.setNameIputeFile(nameFile);
+        }    
+    }
+    
     private class ActLisRadio implements ActionListener {
 
         @Override
