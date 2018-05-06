@@ -38,9 +38,10 @@
  package alexporechny.outInfo;
 
 import alexporechny.collocation.CombinationWords;
+
 import java.io.*;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.Collection;
 
 /**
  *
@@ -185,9 +186,7 @@ public class SystemInOut {
             //writer/
             for (CombinationWords cw : s) {
                 if (isFull ? true : (cw.getIsPossibleNotion() && cw.getCounter() > 1)) {
-                    writer.write(new String(new StringBuilder().append("№").append(i++)
-                            .append(" кол. повторов: ").append(cw.getCounter()).append(" ")
-                            .append(cw.getCombWordsOrig()).append("\r\n")));
+                    writer.write(cw.toString() + "\r\n");
                 }
             }
             writer.write("Конец множества словосочетаний!");

@@ -38,6 +38,7 @@
  package alexporechny.outInfo;
 
 import alexporechny.dataStructure.Word;
+
 import java.util.ArrayList;
 
 /**
@@ -185,6 +186,7 @@ public final class ProgramAnalysis {
                 .append(timeCombWords / counterCombWords).append(" нс")
                 .append("\r\n")
                 .append("\r\n| Время обработки предложений: ").append(timeSentence).append(" мс")
+                .append("\r\n| Dремя морфологической обработки предложений: ").append(timeMorf).append(" мс")
                 .append("\r\n| Среднее длинна предложений в словах: ")
                 .append(counterWord / counterSentence)
                 .append("\r\n| Среднее время получение графов зависимости для каждого предложения с момента загрузки текста в память: ")

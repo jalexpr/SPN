@@ -38,9 +38,13 @@
  
 package MorfSdkJ;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 //import java.lang.reflect.*;
-import java.util.*;
     
 /**
  * 

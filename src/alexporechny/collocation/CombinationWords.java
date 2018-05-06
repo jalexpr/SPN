@@ -35,15 +35,18 @@
  *
  * Благодарим Сергея и Екатерину Полицыных за оказание помощи в разработке библиотеки.
  */
- 
- package alexporechny.collocation;
+
+package alexporechny.collocation;
 
 import alexporechny.outInfo.SystemInOut;
-import java.util.*;
-import alexporechny.partOfSpeech.WordForm;
-import alexporechny.partOfSpeech.SNoun;
-import alexporechny.partOfSpeech.PAdjective;
 import alexporechny.partOfSpeech.HAdverb;
+import alexporechny.partOfSpeech.PAdjective;
+import alexporechny.partOfSpeech.SNoun;
+import alexporechny.partOfSpeech.WordForm;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Alex Porechny alex.porechny@mail.ru
@@ -55,19 +58,12 @@ public class CombinationWords {
     private final String combWordsReal;
     private int counter = 1;
     private boolean isPossibleConcept = false;
+    private final List<Integer> numbersOfSentences = new ArrayList<>();
 
-    public CombinationWords(WordForm prOfSp) {
+    public CombinationWords(WordForm prOfSp, int numbersOfSentences) {
         this.arrWords.add(prOfSp);
         this.combWordsOrig = prOfSp.getOriginalForm();
         this.combWordsReal = prOfSp.getRealForm();
-    }
-
-    public CombinationWords(CombinationWords collocation) {
-        for (WordForm prOfSp : collocation.arrWords) {
-            arrWords.add(prOfSp);
-        }
-        this.combWordsOrig = collocation.combWordsOrig;
-        this.combWordsReal = collocation.combWordsReal;
     }
 
     public CombinationWords(CombinationWords collocation, WordForm prOfSp) {
@@ -143,7 +139,12 @@ public class CombinationWords {
     }
 
     public void print() {
-        SystemInOut.println(new String(new StringBuilder().append(" кол. повторов: ").append(counter).append(" : ").append(combWordsOrig).append(" :: ").append(combWordsReal)));
+        SystemInOut.println(this.toString());
+    }
+
+    @Override
+    public String toString() {
+        return new String(new StringBuilder().append(" кол. повторов: ").append(counter).append(" ").append(getNumbersOfSentences()).append(" : ").append(combWordsOrig).append(" :: ").append(combWordsReal));
     }
 
     public int sizeArrWord() {
@@ -156,9 +157,11 @@ public class CombinationWords {
 
     /**
      * увеличение счестчика
+     * @param numbersOfSentence
      */
-    public void upCounter() {
+    public void upCounterAndAddNumberSentence(int numbersOfSentence) {
         counter++;
+        this.numbersOfSentences.add(numbersOfSentence);
     }
 
     /**
@@ -177,4 +180,13 @@ public class CombinationWords {
         }
         return isPossibleConcept;
     }
+
+    public List<Integer> getNumbersOfSentences() {
+        return numbersOfSentences;
+    }
+
+    public void addNumbersOfSentence(int numbersOfSentence) {
+        this.numbersOfSentences.add(numbersOfSentence);
+    }
+
 }

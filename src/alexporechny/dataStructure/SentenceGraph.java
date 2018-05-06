@@ -37,10 +37,13 @@
  */
  package alexporechny.dataStructure;
 
+import MorfSdkJ.MorfSdkJava;
+import MorfSdkJ.MorfSdkJavaControl;
+import alexporechny.outInfo.ProgramAnalysis;
+import alexporechny.outInfo.SystemInOut;
 import alexporechny.partOfSpeech.*;
-import alexporechny.outInfo.*;
-import MorfSdkJ.*;
-import java.util.*;
+
+import java.util.ArrayList;
 
 /**
  * Класс содержит в себе графы опорных оборотов
@@ -55,21 +58,20 @@ public final class SentenceGraph {
     private final ArrayList<Integer> commas;
     private final ArrayList<ReferenceTurnover> sentenceGraphs;
     private static boolean isFirstWriteNotFindWord = true;
+    private final int indexNumber;
 
-    public SentenceGraph(String sentenceInput) {
+    public SentenceGraph(String sentenceInput, int indexNumber) {
         this.strSentence = sentenceInput;
         this.commas = new ArrayList<>();
         this.sentenceGraphs = new ArrayList<>();
         this.arrWord = new ArrayList<>();
         this.wordUnion = new ArrayList<>();
+        this.indexNumber = indexNumber;
         initialization();
     }
 
     private void initialization() {
-        long start = System.currentTimeMillis();
         findWords();
-        long finish = System.currentTimeMillis();
-        ProgramAnalysis.addMorf(finish - start);
 
         ArrayList<ReferenceTurnover> arrReferenceTurnover = findReferenceTurnover();
         for (ReferenceTurnover referenceTurnover : arrReferenceTurnover) {
@@ -156,6 +158,7 @@ public final class SentenceGraph {
 
         MorfSdkJava sdk = MorfSdkJavaControl.getMorfSdkJava();
 
+        long start = System.currentTimeMillis();
         for (int i = 0; i < arrWordStr.length; i++) {
 
             if (!arrWordStr[i].equals(",")) {
@@ -267,6 +270,8 @@ public final class SentenceGraph {
                 commas.add(i);
             }
         }
+        long finish = System.currentTimeMillis();
+        ProgramAnalysis.addMorf(finish - start);
         ProgramAnalysis.addWord(arrWord.size());
     }
 
@@ -363,4 +368,9 @@ public final class SentenceGraph {
             SystemInOut.printInterimResultln();
         }
     }
+
+    public int getIndexNumber() {
+        return indexNumber;
+    }
+
 }

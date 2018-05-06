@@ -35,15 +35,16 @@
  *
  * Благодарим Сергея и Екатерину Полицыных за оказание помощи в разработке библиотеки.
  */
- 
+
 package alexporechny.collocation;
 
-import alexporechny.outInfo.ProgramAnalysis;
-import alexporechny.outInfo.SystemInOut;
 import alexporechny.dataStructure.ReferenceTurnover;
 import alexporechny.dataStructure.SentenceGraph;
 import alexporechny.dataStructure.Word;
+import alexporechny.outInfo.ProgramAnalysis;
+import alexporechny.outInfo.SystemInOut;
 import alexporechny.partOfSpeech.WordForm;
+
 import java.util.*;
 
 /**
@@ -57,16 +58,16 @@ public final class Statistics {
                     ? cw1.getCombWordsOrig().compareTo(cw2.getCombWordsOrig()) : 0);
 
     //полечение всех словосочитаний
-    private static Set<CombinationWords> CollocationByWord(Word headWord, boolean isOneLaval) {
+    private static Set<CombinationWords> collocationByWord(Word headWord, boolean isOneLaval, int indexNumberSentence) {
         Set<CombinationWords> set = new HashSet<>();
             if (headWord != null) {
                 for (WordForm wordForm : headWord.getArrWordForm()) {
 
                     Set<CombinationWords> bufSet;
                     for (Word wordChild : headWord.getArrControlled()) {
-                        bufSet = CollocationByWord(wordChild, false);
+                        bufSet = Statistics.collocationByWord(wordChild, false, indexNumberSentence);
                         if (bufSet.isEmpty()) {
-                            set.add(new CombinationWords(wordForm));
+                            set.add(new CombinationWords(wordForm, indexNumberSentence));
                         } else {
                             for (CombinationWords buf : bufSet) {
                                 CombinationWords bufCW = new CombinationWords(buf, wordForm);
@@ -76,7 +77,7 @@ public final class Statistics {
                         }
                     }
                     if (!isOneLaval) {
-                        set.add(new CombinationWords(wordForm));
+                        set.add(new CombinationWords(wordForm, indexNumberSentence));
                     }
                 }
             }
@@ -84,9 +85,9 @@ public final class Statistics {
     }
 
     //полечение всех словосочитаний вхождение в первый уровень
-    private static void CollocationByWord(Word headWord) {
+    private static void collocationByWord(Word headWord, int indexNumberSentence) {
         MAIN_SET.clear();
-        CollocationByWord(headWord, true);
+        Statistics.collocationByWord(headWord, true, indexNumberSentence);
     }
 
     //собираем статистику
@@ -95,22 +96,24 @@ public final class Statistics {
         ArrayList<CombinationWords> combWord = new ArrayList<>();
         SystemInOut.printProsessSent("Процесс построения словосочетаний");
         for (SentenceGraph sentence : arrSentence) {
+            int indexNumberSentence = sentence.getIndexNumber();
             for (ReferenceTurnover sentenceGraph : sentence.getSenteceGraphs()) {
                 if((INDEX_SENTECE_GRAPH  - 1) % 500 == 0){
                     SystemInOut.printProsessSent(".");
                 }
                 INDEX_SENTECE_GRAPH++;
                 long startTime = System.nanoTime();
-                CollocationByWord(sentenceGraph.getHeadWord());
+                collocationByWord(sentenceGraph.getHeadWord(), indexNumberSentence);
                 long finishTime = System.nanoTime();
                 ProgramAnalysis.addTimeCombWordsNano(finishTime - startTime);
                 int buf;
                 for (CombinationWords cw : MAIN_SET) {
                     buf = combWord.indexOf(cw);
                     if (buf == -1) {
+                        cw.addNumbersOfSentence(sentence.getIndexNumber());
                         combWord.add(cw);
                     } else {
-                        combWord.get(buf).upCounter();
+                        combWord.get(buf).upCounterAndAddNumberSentence(sentence.getIndexNumber());
                     }
                 }
             }

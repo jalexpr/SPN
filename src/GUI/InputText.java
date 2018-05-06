@@ -37,20 +37,26 @@
  */
  package GUI;
 
-import alexporechny.collocation.Statistics;
-import alexporechny.dataStructure.ReferenceTurnover;
 import alexporechny.collocation.CombinationWords;
+import alexporechny.collocation.Statistics;
 import alexporechny.dataStructure.ManagingSentenceGraphs;
+import alexporechny.dataStructure.ReferenceTurnover;
 import alexporechny.outInfo.ProgramAnalysis;
 import alexporechny.outInfo.SystemInOut;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.*;
-import java.util.*;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class InputText extends JFrame {
 
+    public static String version = "1.3";
     private boolean isLoadingFile = true;
     private int index = 0;
     private ManagingSentenceGraphs managing = null;
@@ -75,9 +81,13 @@ public class InputText extends JFrame {
                     String straText = inputeFile(args[1]);
                     setNameFile(args[1]);
                     initializationGraf(straText);
+                } else {
+                if(args[0].equals("-version") | args[0].equals("-v")) {
+                    System.out.println("version = " + version);
                 }
             }
-    }
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -233,9 +243,9 @@ public class InputText extends JFrame {
         if(nameFile.contains(".txt")){
             SystemInOut.setFolderPath(nameFile.replace(".txt", ""));
             ProgramAnalysis.setNameIputeFile(nameFile);
-        }    
+        }
     }
-    
+
     private class ActLisRadio implements ActionListener {
 
         @Override

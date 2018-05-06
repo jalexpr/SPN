@@ -37,11 +37,13 @@
  */
  package GUI;
 
-import alexporechny.dataStructure.Word;
 import alexporechny.dataStructure.ReferenceTurnover;
-import java.awt.*;
-import java.awt.event.*;
+import alexporechny.dataStructure.Word;
+
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  *

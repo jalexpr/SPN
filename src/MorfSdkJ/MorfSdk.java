@@ -37,8 +37,9 @@
  */
  package MorfSdkJ;
 
-import java.io.*;
-import java.util.logging.*;
+import java.io.UnsupportedEncodingException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MorfSdk {
 

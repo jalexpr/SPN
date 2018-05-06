@@ -40,7 +40,8 @@
 import alexporechny.outInfo.SystemInOut;
 import alexporechny.partOfSpeech.Union;
 import alexporechny.partOfSpeech.WordForm;
-import java.util.*;
+
+import java.util.ArrayList;
 
 /**
  * класс слова

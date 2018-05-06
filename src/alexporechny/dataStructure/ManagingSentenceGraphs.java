@@ -39,7 +39,9 @@
 
 import alexporechny.outInfo.ProgramAnalysis;
 import alexporechny.outInfo.SystemInOut;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Обработка исходного текста, составление графов предложений выделенных из исходного текста
@@ -98,33 +100,33 @@ public final class ManagingSentenceGraphs {
             delte = 100;
         }
         //получаем графы предложений
-        int i = 1;
+        int indexSentence = 1;
         for (String bufSentence : arrInputSentence) {
-            if (i > 20000) {
+            if (indexSentence > 20000) {
                 break;
             }
-            if (i > 0) {
+            if (indexSentence > 0) {
                 if (!SystemInOut.isPrintInterimResult()) {
-                    if ((i - 1) % delte == 0) {
-                        SystemInOut.printProsessSentln("Запущено построение графов опорных оборотов в диапазоне №" + i + "-" + ((i - 1) + delte));
+                    if ((indexSentence - 1) % delte == 0) {
+                        SystemInOut.printProsessSentln("Запущено построение графов опорных оборотов в диапазоне №" + indexSentence + "-" + ((indexSentence - 1) + delte));
                     }
                 } else {
-                    SystemInOut.printProsessSentln("Запущено построение графа/графов предложения №" + i);
+                    SystemInOut.printProsessSentln("Запущено построение графа/графов предложения №" + indexSentence);
                 }
 
                 //SystemInOut.printInterimResultln(bufSentence);
                 SystemInOut.printInterimResultln(bufSentence);
-                arrSent.add(new SentenceGraph(bufSentence));
+                arrSent.add(new SentenceGraph(bufSentence, indexSentence));
 
                 if (!SystemInOut.isPrintInterimResult()) {
-                    if ((i - 1) % delte == delte - 1) {
+                    if ((indexSentence - 1) % delte == delte - 1) {
                         SystemInOut.printProsessSentln("Построение графов предложений выполнена!\n");
                     }
                 } else {
                     SystemInOut.printProsessSentln("Построение графа/графов предложения выполнена!\n");
                 }
             }
-            i++;
+            indexSentence++;
         }
         SystemInOut.printProsessSentln("Построение графов предложений выполнена!\n");
         return arrSent;
